@@ -82,7 +82,13 @@
     .chemistry-tool:hover { transform: translateY(-1px); border-color: rgba(131,232,220,.48); background: rgba(131,232,220,.08); }
     .chemistry-tool span { color: var(--aqua); font-size: 13px; line-height: 1; }
     .chemistry-tool-share { border-color: rgba(131,232,220,.28); color: #eaf5f2; background: linear-gradient(135deg, rgba(131,232,220,.1), rgba(168,146,255,.07)); }
+    .chemistry-tool-copy { border-color: rgba(131,232,220,.22); }
     .chemistry-tool:focus-visible { outline: 2px solid var(--aqua); outline-offset: 2px; }
+    .pair-share-output { grid-column: 1 / -1; min-width: 0; margin-top: 1px; padding: 10px 11px; border: 1px solid rgba(131,232,220,.18); border-radius: 10px; background: rgba(5,10,13,.38); }
+    .pair-share-output[hidden] { display: none !important; }
+    .pair-share-output label { display: block; margin: 0 0 6px; color: #b8c5cc; font-size: 9px; font-weight: 720; letter-spacing: .04em; }
+    .pair-share-output textarea { display: block; width: 100%; min-height: 56px; padding: 8px 9px; border: 1px solid rgba(255,255,255,.12); border-radius: 7px; background: rgba(0,0,0,.24); color: #cbd7dc; cursor: text; font: 9px/1.45 ui-monospace, SFMono-Regular, Menlo, monospace; overflow-wrap: anywhere; word-break: break-all; resize: vertical; }
+    .pair-share-status { margin: 6px 0 0; color: #8f9da7; font-size: 9px; line-height: 1.45; }
     .hero-art { height: 330px; min-height: 330px; position: relative; display: flex; align-items: stretch; justify-content: center; overflow: hidden; border-radius: 24px; border: 1px solid rgba(255,255,255,.1); background: radial-gradient(ellipse at 50% 52%, rgba(66,94,103,.38), transparent 53%), linear-gradient(145deg, rgba(22,34,42,.94), rgba(20,18,31,.96)); box-shadow: 0 24px 66px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.06); isolation: isolate; }
     .hero-art:before, .hero-art:after { content: ""; position: absolute; z-index: -1; left: 50%; top: 52%; border: 1px solid rgba(131,232,220,.12); border-radius: 50%; width: 340px; height: 340px; transform: translate(-50%,-50%); pointer-events: none; }
     .hero-art:after { width: 244px; height: 244px; border-color: rgba(168,146,255,.15); }
@@ -403,7 +409,7 @@
       .hero-note { margin-top: 12px; font-size: 9px; letter-spacing: .055em; }
       .hero-quiet-link { min-height: 44px; margin-top: 3px; }
       .chemistry-console { margin-top: 10px; padding: 12px; border-radius: 14px; }
-      .chemistry-controls { width: 100%; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 6px; }
+      .chemistry-controls { width: 100%; display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 6px; }
       .chemistry-tool { width: 100%; min-height: 44px; padding: 0 5px; font-size: 9px; }
       .pairing-caption { font-size: 9px; }
       .studio-intro { font-size: 10px; }
@@ -646,7 +652,13 @@
           <div class="chemistry-controls" role="group" aria-label="Change or share the current Chog pair">
             <button class="chemistry-tool" id="swapChogA" type="button" aria-label="Swap Chog in slot A and play the new pairing">Swap A <span aria-hidden="true">↻</span></button>
             <button class="chemistry-tool" id="swapChogB" type="button" aria-label="Swap Chog in slot B and play the new pairing">Swap B <span aria-hidden="true">↻</span></button>
-            <button class="chemistry-tool chemistry-tool-share" id="sharePair" type="button" aria-label="Share this Chog pairing as a playable link">Share</button>
+            <button class="chemistry-tool chemistry-tool-share" id="sharePair" type="button" aria-label="Open the device share sheet for this Chog pairing">Share</button>
+            <button class="chemistry-tool chemistry-tool-copy" id="copyPairLink" type="button" aria-label="Copy a short link to this Chog pair">Copy link</button>
+          </div>
+          <div class="pair-share-output" id="pairShareOutput" hidden>
+            <label for="pairShareUrl">Short pair link · opens with the default groove</label>
+            <textarea id="pairShareUrl" rows="2" readonly spellcheck="false" aria-label="Short URL for the current Chog pair"></textarea>
+            <p class="pair-share-status" id="pairShareStatus" role="status" aria-live="polite">The URL is shown here so you can copy it manually if needed.</p>
           </div>
         </div>
       </section>
@@ -1009,11 +1021,78 @@
       const bytes = Uint8Array.from(atob(padded), char => char.charCodeAt(0));
       return JSON.parse(new TextDecoder().decode(bytes));
     }
+    function decodeStepMask(mask) {
+      if (!Number.isInteger(mask) || mask < 0 || mask > 255) throw new Error("The short pairing link has an invalid step pattern.");
+      return Array.from({ length: 8 }, (_, index) => Boolean(mask & (1 << index)));
+    }
+    function decodeCompactPairCode(value) {
+      if (typeof value !== "string" || value.length > 100) throw new Error("This short pairing link is invalid.");
+      const fields = value.split(".");
+      if (fields.length !== 11 || fields[0] !== "2") throw new Error("This short pairing link is not supported.");
+      const values = fields.slice(1).map(field => {
+        if (!/^[0-9a-z]+$/i.test(field)) throw new Error("This short pairing link contains invalid data.");
+        const number = Number.parseInt(field, 36);
+        if (!Number.isSafeInteger(number)) throw new Error("This short pairing link contains an invalid number.");
+        return number;
+      });
+      const [idA, idB, bpm, drumPercent, voiceMaskA, voiceMaskB, kickMask, clapMask, shakerMask, drumEnabledMask] = values;
+      if (idA < 1 || idB < 1 || idA === idB) throw new Error("A pairing needs two different Chogs.");
+      if (!Number.isInteger(bpm) || bpm < 84 || bpm > 132 || !Number.isInteger(drumPercent) || drumPercent < 0 || drumPercent > 100) throw new Error("The short pairing link has invalid tempo or drum settings.");
+      const chogs = [idA, idB].map(id => {
+        const sample = SAMPLE_CHOGS.find(item => Number(item.id) === id);
+        if (!sample) throw new Error("This short link refers to a Chog that is not in the embedded sample pool.");
+        return { ...sample, source: "sample", liveSignature: false };
+      });
+      const patterns = {}, enabled = {};
+      patterns[chogs[0].id] = decodeStepMask(voiceMaskA);
+      patterns[chogs[1].id] = decodeStepMask(voiceMaskB);
+      enabled[chogs[0].id] = true;
+      enabled[chogs[1].id] = true;
+      [kickMask, clapMask, shakerMask].forEach((mask, index) => {
+        const track = DRUM_TRACKS[index];
+        if (!track) throw new Error("The short pairing link has an unsupported drum lane.");
+        patterns[track.id] = decodeStepMask(mask);
+        enabled[track.id] = Boolean(drumEnabledMask & (1 << index));
+      });
+      if (!Number.isInteger(drumEnabledMask) || drumEnabledMask < 0 || drumEnabledMask > 7) throw new Error("The short pairing link has invalid drum toggles.");
+      return { chogs, bpm, drumLevel: drumPercent / 100, patterns, enabled, activeIds: chogs.map(chog => chog.id) };
+    }
+    function encodeSamplePairKey() {
+      const pair = CHOGS.slice(0, 2).map(chog => Number(chog.id));
+      const pool = SAMPLE_CHOGS.map(chog => Number(chog.id));
+      if (pair.length !== 2 || pair[0] === pair[1]) return "";
+      const aIndex = pool.indexOf(pair[0]), bIndex = pool.indexOf(pair[1]);
+      if (aIndex < 0 || bIndex < 0 || pool.length < 2) return "";
+      const bOffset = bIndex < aIndex ? bIndex : bIndex - 1;
+      return (aIndex * (pool.length - 1) + bOffset).toString(36);
+    }
+    function decodeSamplePairKey(value) {
+      if (typeof value !== "string" || !/^[0-9a-z]$/i.test(value) || SAMPLE_CHOGS.length < 2) throw new Error("This short Chog-pair link is invalid.");
+      const index = Number.parseInt(value, 36), poolSize = SAMPLE_CHOGS.length;
+      if (!Number.isInteger(index) || index < 0 || index >= poolSize * (poolSize - 1)) throw new Error("This short Chog-pair link is not supported.");
+      const aIndex = Math.floor(index / (poolSize - 1));
+      const bOffset = index % (poolSize - 1);
+      const bIndex = bOffset >= aIndex ? bOffset + 1 : bOffset;
+      const chogs = [SAMPLE_CHOGS[aIndex], SAMPLE_CHOGS[bIndex]].map(chog => ({ ...chog, source: "sample", liveSignature: false }));
+      const patterns = {}, enabled = {};
+      chogs.forEach(chog => { patterns[chog.id] = [...voiceFor(chog).eyes.steps]; enabled[chog.id] = true; });
+      DRUM_TRACKS.forEach(track => { patterns[track.id] = [...track.steps]; enabled[track.id] = true; });
+      return { chogs, bpm: 108, drumLevel: 0.82, patterns, enabled, activeIds: chogs.map(chog => chog.id) };
+    }
     let STARTUP_MIX = null;
     let STARTUP_MIX_ERROR = "";
     try {
-      const sharedCode = new URLSearchParams(window.location.search).get("mix");
-      if (sharedCode) {
+      const shareParams = new URLSearchParams(window.location.search);
+      const shortPairMatch = String(window.location.hash || "").match(/^#p([0-9a-z])$/i);
+      const compactPairCode = shareParams.get("p");
+      const sharedCode = shareParams.get("mix");
+      if (shortPairMatch) {
+        STARTUP_MIX = decodeSamplePairKey(shortPairMatch[1]);
+        CHOGS = STARTUP_MIX.chogs;
+      } else if (compactPairCode) {
+        STARTUP_MIX = decodeCompactPairCode(compactPairCode);
+        CHOGS = STARTUP_MIX.chogs;
+      } else if (sharedCode) {
         STARTUP_MIX = normalizeMixPayload(decodeMixPayload(sharedCode));
         CHOGS = STARTUP_MIX.chogs;
       }
@@ -1660,7 +1739,7 @@
       if (note && statusText) note.textContent = statusText;
       return true;
     }
-    function createShareURL({ pairing = false } = {}) {
+    function publicShareBaseURL() {
       const { protocol, hostname } = window.location;
       const host = String(hostname || "").toLowerCase();
       const octets = host.split(".").map(Number);
@@ -1672,6 +1751,11 @@
       }
       const url = new URL(window.location.href);
       url.search = "";
+      url.hash = "";
+      return url;
+    }
+    function createShareURL({ pairing = false } = {}) {
+      const url = publicShareBaseURL();
       const payload = makeMixPayload();
       if (pairing) {
         payload.activeIds = CHOGS.slice(0, 2).map(chog => chog.id);
@@ -1681,10 +1765,49 @@
       url.hash = pairing ? "top" : "studio";
       return url.toString();
     }
+    function createPairingShareURL() {
+      const shortPairKey = encodeSamplePairKey();
+      if (shortPairKey) {
+        const url = publicShareBaseURL();
+        url.hash = `p${shortPairKey}`;
+        return url.toString();
+      }
+      // Live-token links still carry the read-only metadata snapshot needed to restore the Chog.
+      return createShareURL({ pairing: true });
+    }
+    async function copyPairingLink() {
+      let url;
+      try { url = createPairingShareURL(); }
+      catch (error) { showToast(error?.message || "Open the public app URL to create a playable pairing link."); return; }
+      const output = document.getElementById("pairShareOutput");
+      const field = document.getElementById("pairShareUrl");
+      const status = document.getElementById("pairShareStatus");
+      field.value = url;
+      output.hidden = false;
+      try {
+        if (!navigator.clipboard?.writeText) throw new Error("Clipboard API unavailable");
+        await navigator.clipboard.writeText(url);
+        status.textContent = "Short pair link copied. It opens with the default groove; use Beat Card Share for custom tempo or step edits. The URL is visible above.";
+        showToast("Short Chog-pair link copied.");
+      } catch (_) {
+        field.focus();
+        field.select();
+        try { field.setSelectionRange(0, field.value.length); } catch (_) {}
+        let compatibilityCopyWorked = false;
+        try { compatibilityCopyWorked = typeof document.execCommand === "function" && document.execCommand("copy"); } catch (_) {}
+        if (compatibilityCopyWorked) {
+          status.textContent = "Short pair link copied. It opens with the default groove; use Beat Card Share for custom tempo or step edits. The URL is visible above.";
+          showToast("Short Chog-pair link copied.");
+        } else {
+          status.textContent = "Copy did not run automatically. The short pair URL is visible here—tap or select it, then copy.";
+          showToast("Short pair link ready below—copy the visible URL.");
+        }
+      }
+    }
     async function shareCurrentBeat(options = {}) {
       const pairing = options?.pairing === true;
       let url;
-      try { url = createShareURL({ pairing }); }
+      try { url = pairing ? createPairingShareURL() : createShareURL(); }
       catch (error) { showToast(error?.message || "Open the public app URL to create a playable share link."); return; }
       const pairLabel = CHOGS.slice(0, 2).map(chog => `#${chog.id}`).join(" × ");
       const title = pairing ? `Chog Chemistry · ${pairLabel}` : "Chog Beat Card";
@@ -2058,6 +2181,8 @@
     document.getElementById("swapChogA").addEventListener("click", () => swapChog(0));
     document.getElementById("swapChogB").addEventListener("click", () => swapChog(1));
     document.getElementById("sharePair").addEventListener("click", () => shareCurrentBeat({ pairing: true }));
+    document.getElementById("copyPairLink").addEventListener("click", copyPairingLink);
+    document.getElementById("pairShareUrl").addEventListener("focus", event => event.target.select());
     document.getElementById("stopAudio").addEventListener("click", () => stopPlayback());
     document.getElementById("tempo").addEventListener("input", event => {
       state.bpm = Number(event.target.value);
