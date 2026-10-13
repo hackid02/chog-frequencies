@@ -724,7 +724,7 @@
           <div>
             <p class="duet-hunt-kicker">Listen · swap · collect</p>
             <h2 class="duet-hunt-title" id="duetHuntTitle">Duet Hunt</h2>
-            <p class="duet-hunt-intro">Explore the six offline Chogs, compare a pairing with Swap A or B, and keep the duets you want to hear again. No music skills needed.</p>
+            <p class="duet-hunt-intro">A finite, offline listening challenge: explore six sample Chogs, compare swaps, and collect up to 15 unique pairings. Your Duet Book stays in this browser; no music skills needed.</p>
           </div>
           <div class="duet-hunt-progress" role="status" aria-live="polite" aria-atomic="true">
             <strong id="duetBookCount">0 / 15</strong>
@@ -858,14 +858,14 @@
           <div class="trait-proof-head">
             <div>
               <p class="trait-proof-kicker">Why Chog matters · Trait → Sound</p>
-              <h3 class="trait-proof-title" id="traitProofTitle">Each token writes a different voice.</h3>
-              <p class="trait-proof-intro">These are the Chogs currently loaded in slots A and B. Their mapped traits generate the voice and eight-note phrase below; audition either one solo, then layer them into the groove.</p>
+              <h3 class="trait-proof-title" id="traitProofTitle">Chog traits shape each voice.</h3>
+              <p class="trait-proof-intro">The six embedded sample Chogs have explicit sound mappings for their Background, Eyes, and Body values. Compare the traits and eight-note phrase below; unfamiliar values use deterministic fallbacks.</p>
             </div>
             <span class="trait-proof-slots">Current tokens · A + B</span>
           </div>
           <div class="trait-proof-grid" id="traitProofGrid" aria-label="Current Chog comparison for slots A and B"></div>
           <p class="sr-only" id="traitProofStatus" role="status" aria-live="polite" aria-atomic="true"></p>
-          <p class="trait-proof-note"><strong>Sound map:</strong> Background chooses the tonal palette; Eyes shape melody and waveform; Body shapes attack and note length; Side pans the voice; Aura adds shimmer on steps 1 and 5. A live-token ID plus Head and Mouth can rotate its phrase contour by 0–2 steps. Starter art is a token snapshot; Monad lookup is read-only and never verifies ownership. Tier is descriptive metadata only; it does not make a voice louder or better.</p>
+          <p class="trait-proof-note"><strong>Sound map:</strong> For the six embedded samples, Background selects an explicit tonal palette; Eyes select a melody contour, default rhythm, and waveform; Body selects the note envelope (a missing Body trait uses a neutral mapping). Other Background, Eyes, and Body values use deterministic fallbacks. Side pans the voice; any Aura adds a quiet shimmer on steps 1 and 5. A live-token ID plus Head and Mouth can rotate its phrase contour by 0–2 steps. Starter art is a token snapshot; Monad lookup is read-only and never verifies ownership. Tier is descriptive metadata only; it does not make a voice louder or better.</p>
         </section>
       </section>
 
@@ -948,17 +948,31 @@
       for (let i = 0; i < String(value).length; i++) hash = Math.imul(hash ^ String(value).charCodeAt(i), 16777619);
       return hash >>> 0;
     }
+    // Explicit mappings cover every Background, Eyes, and Body value present in the six embedded samples.
+    // Unknown live-trait values continue to use deterministic fallbacks below.
     const palette = {
       "Aqua": { midi: 62, scale: [0, 3, 5, 7, 10], label: "Tidal / D minor" },
-      "Lime Green": { midi: 67, scale: [0, 2, 4, 7, 9], label: "Sunlit / G major" }
+      "Lime Green": { midi: 67, scale: [0, 2, 4, 7, 9], label: "Sunlit / G major" },
+      "Sky Blue": { midi: 64, scale: [0, 3, 5, 7, 10], label: "Open sky / E minor" },
+      "Red Sky": { midi: 69, scale: [0, 3, 5, 7, 10], label: "Afterglow / A minor" },
+      "Lemon Yellow": { midi: 60, scale: [0, 2, 4, 7, 9], label: "Sunbeam / C major" },
+      "Light Purple": { midi: 65, scale: [0, 2, 4, 7, 9], label: "Lavender / F major" }
     };
     const eyeVoices = {
       "Closed Eye Crying": { contour: [4, 3, 2, 3, 1, 2, 0, 1], steps: [1, 0, 1, 1, 0, 1, 0, 0], kind: "soft tide", wave: "sine" },
-      "Clown Eye": { contour: [0, 2, 4, 1, 3, 4, 2, 3], steps: [1, 0, 1, 0, 1, 1, 0, 1], kind: "bright bounce", wave: "triangle" }
+      "Clown Eye": { contour: [0, 2, 4, 1, 3, 4, 2, 3], steps: [1, 0, 1, 0, 1, 1, 0, 1], kind: "bright bounce", wave: "triangle" },
+      "Tired": { contour: [3, 3, 2, 2, 1, 1, 0, 2], steps: [1, 0, 0, 1, 0, 1, 0, 0], kind: "sleepy drift", wave: "sine" },
+      "fire laser": { contour: [0, 4, 2, 5, 1, 4, 3, 0], steps: [1, 1, 0, 1, 0, 1, 1, 0], kind: "laser sparks", wave: "sawtooth" },
+      "Dead": { contour: [2, 2, 1, 1, 0, 0, 1, 0], steps: [1, 0, 0, 0, 1, 0, 0, 0], kind: "hollow pulse", wave: "sine" },
+      "Side Eye": { contour: [1, 4, 2, 3, 0, 5, 2, 1], steps: [1, 0, 1, 0, 0, 1, 0, 1], kind: "side glance", wave: "triangle" }
     };
     const bodyVoice = {
       "Prisoner": { attack: 0.035, decay: 0.29, pulse: 0.92 },
-      "Zero THOTS": { attack: 0.009, decay: 0.17, pulse: 0.58 }
+      "Zero THOTS": { attack: 0.009, decay: 0.17, pulse: 0.58 },
+      "Gangster suit": { attack: 0.018, decay: 0.22, pulse: 0.70 },
+      "Wizard Cape": { attack: 0.045, decay: 0.35, pulse: 0.90 },
+      "Banana suit": { attack: 0.026, decay: 0.27, pulse: 0.80 },
+      "No Body trait": { attack: 0.022, decay: 0.22, pulse: 0.72 }
     };
     const fallbackModes = [
       { scale: [0, 2, 4, 7, 9], label: "major pentatonic" },
@@ -992,7 +1006,7 @@
       };
     }
     function bodyFor(body) {
-      const value = body || "Unmapped body";
+      const value = body || "No Body trait";
       if (bodyVoice[value]) return bodyVoice[value];
       const h = hashText(`body:${value}`);
       return [
@@ -1718,7 +1732,7 @@
         const rows = [
           traitProofRow("Background", traitValue(chog, "Background") || "Unmapped", "Tonal palette", voice.palette.label),
           traitProofRow("Eyes", traitValue(chog, "Eyes") || "Unmapped", "Melody · waveform", `${voice.eyes.kind} · ${voice.eyes.wave}`),
-          traitProofRow("Body", traitValue(chog, "Body") || "Unmapped", "Note envelope", `${attackMs} ms attack · ${gateMs} ms gate`),
+          traitProofRow("Body", traitValue(chog, "Body") || "No Body trait", "Note envelope", `${attackMs} ms attack · ${gateMs} ms gate`),
           traitProofRow("Side", traitValue(chog, "Side") || "Unmapped", "Stereo pan", `${panPercent}% ${panDirection}`),
           traitProofRow("Aura", aura, "Accent", auraSound),
           traitProofRow("ID · Head · Mouth", signatureInput, "Contour offset", signatureOutput)
@@ -2512,5 +2526,5 @@
     if (STARTUP_MIX && STARTUP_MIX.chogs.some(chog => chog.source === "shared")) setLookupStatus("SHARED TRAIT SNAPSHOT · no live Monad lookup was performed for this link.", "shared");
     if (STARTUP_MIX_ERROR) showToast(STARTUP_MIX_ERROR);
   </script>
-</body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a49b8b8c1a77dc45',t:'MTc5MTg2NTE1Ng=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
