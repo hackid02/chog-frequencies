@@ -66,8 +66,9 @@ This is a static, self-contained HTML/CSS/JavaScript app. Open `index.html`, or 
 5. Use the pairing **Copy link** button and open the copied URL in a fresh tab. For custom tempo or step edits, use Beat Card **Share beat** instead.
 6. Try **Save mix** and **Download card**. To test a specific token, expand the optional lookup panel in a regular browser with network access; no wallet is needed.
 
-## Validation notes
+## Validation status
 
+The project owner manually tested the app in Safari and Firefox. JavaScript syntax and HTML parsing passed. A local logic harness checked all six sample mappings, the 15 unordered sample pairings, and unknown-trait fallbacks.
 An independent headless Chromium audit exercised the 30 embedded pair codes, share/copy fallbacks, legacy share formats, malformed-link handling, local saves, responsive viewport sizes, reduced-motion behavior, and PNG export. The audit identified two interaction issues: changing tempo during playback could force extra steps, and toggling a step could drop keyboard focus because the grid was redrawn. Both have been patched in this local source: tempo changes now take effect at the next scheduled step, and focus returns to the edited step after redraw.
 
 The local source, including Duet Hunt, has passed JavaScript syntax and HTML-structure checks. The Duet Book data logic was tested for all 15 unordered sample pairs, order normalization, adding, duplicate prevention, invalid IDs, removal, corrupt stored entries, and blocked browser storage. The explicit six-sample mappings and finite-challenge wording were refined locally on Oct. 13, 2026; a fresh browser regression after these refinements is still required. No independent visual/mobile browser test or Safari/Firefox test was performed here. The user reports that the A/B sound difference is obvious on their listening test; that is user-reported, not an independent listening test by this assistant. The earlier audit's machine-readable audio/timing checks had measurement gaps, so they should not be described as a complete pass.
