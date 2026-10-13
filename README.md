@@ -8,7 +8,7 @@ Open `index.html` in a modern browser and tap **Surprise me**. The app chooses a
 
 The **Meet the Chogs** section keeps the layout lighter with four cards at a time: the current pair plus two ready-to-pair sample picks. All six verified snapshots remain available to Surprise me and the A/B swap controls. The current pair is named by token ID and selected real traits. Tier is metadata for context only; it does not boost loudness, quality, or any other musical advantage.
 
-The rhythm studio is optional. Visitors can leave the duet untouched, or adjust tempo, drum level, synthesized kick/clap/shaker lanes, and the editable eight-step Chog voice lanes. Solo audition, the Beat Card, local saves, and PNG export remain available.
+The **Duet Hunt** is a finite, offline listening challenge: explore six embedded sample Chogs, compare a pairing with **Swap A/B**, and collect up to 15 unique unordered sample pairings in **My Duet Book**. The book saves only in the current browser. This is not a daily, shared, or leaderboard retention loop, and it does not claim that every pairing has a unique sound signature. The rhythm studio is optional. Visitors can leave the duet untouched, or adjust tempo, drum level, synthesized kick/clap/shaker lanes, and the editable eight-step Chog voice lanes. Solo audition, the Beat Card, local mix saves, and PNG export remain available.
 
 **Swap A/B** picks from the six embedded samples, so it works instantly without a lookup. For a specific token, expand **Load a specific token ID**; that optional read-only Monad/IPFS lookup needs network access and replaces the selected slot.
 
@@ -34,20 +34,20 @@ The four additions were checked against the Chog Genesis ERC-721 `tokenURI()` me
 
 - **Background** chooses tonal center and scale.
 - **Eyes** choose melodic contour, waveform, and default voice pattern.
-- **Body** shapes note attack, decay, and gate length.
+- **Body** shapes note attack, decay, and gate length; the #1500 sample has no Body trait and uses an explicit neutral envelope.
 - **Side** pans the voice slightly left or right.
 - **Aura** adds a quiet shimmer accent.
-- Other trait values use deterministic fallbacks, so unfamiliar values still contribute to the sound.
+- Every Background, Eyes, and Body value present in the six embedded samples has an explicit mapping. Unfamiliar live-token values still use deterministic fallbacks.
 - For read-only live-token lookups, token ID plus Head/Mouth traits can add a subtle phrase signature. Shared links treat live metadata as a snapshot.
 - Tier/rarity does not make a voice louder, better, or more powerful.
 
-Pairing two Chogs combines their token-specific voices. It is not a generic random sound clip with token art added afterward.
+Pairing two Chogs combines their trait-derived voices. The six embedded samples have explicit mappings for their sample values; deterministic fallbacks for other traits do not guarantee a unique signature for every Chog in the 1,969-token collection.
 
 ## Sharing, privacy, and scope
 
 **Share** opens the browser's native share options for the current pair where supported. The adjacent **Copy link** button tries to copy a short pair URL automatically, shows it in the page, and has a manual-copy fallback. For embedded sample pairs, a one-character code identifies the ordered pair; recipients hear the default groove. For custom tempo and step edits, use the Beat Card's **Share beat**, which preserves the full mixer state. Pairings that include a live-looked-up token may need a longer metadata snapshot. This client-side app uses no external shortener or storage. Links are only generated from a public HTTP(S) origin; local addresses and gated sandbox-preview hosts are blocked rather than copied as if they were public links.
 
-**Save mix** stays in this browser and keeps up to eight saved grooves. There is no account, wallet connection, ownership verification, purchase, transfer, backend, cloud save, or on-chain write. Audio is synthesized in the browser. Optional live lookup reads Monad/IPFS metadata only; it does not sign or submit transactions. The embedded sample pair and artwork work offline.
+**Save mix** stays in this browser and keeps up to eight saved grooves. The separate **Duet Book** stores only embedded sample-pair IDs in this browser; it can be replayed or edited here, but does not sync across devices. There is no account, wallet connection, ownership verification, purchase, transfer, backend, cloud save, or on-chain write. Audio is synthesized in the browser. Optional live lookup reads Monad/IPFS metadata only; it does not sign or submit transactions. The embedded sample pair and artwork work offline.
 
 The full-width musical-note rail remains decorative and independent of playback. It respects reduced-motion preferences. Responsive styling and comfortable touch targets are retained.
 
@@ -61,12 +61,15 @@ This is a static, self-contained HTML/CSS/JavaScript app. Open `index.html`, or 
 
 1. Open the app in a modern browser and tap **Surprise me**; confirm a two-Chog duet starts after the gesture.
 2. Use **Replay pairing**, **Swap A**, and **Swap B**. The swap controls use the six embedded samples and need no network.
-3. Open the optional rhythm studio. Toggle a step with a mouse or keyboard, then change tempo and drum level while playback runs.
-4. Use the pairing **Copy link** button and open the copied URL in a fresh tab. For custom tempo or step edits, use Beat Card **Share beat** instead.
-5. Try **Save mix** and **Download card**. To test a specific token, expand the optional lookup panel in a regular browser with network access; no wallet is needed.
+3. In **Duet Hunt**, find a new pair, listen, use **Swap A/B** to compare, then add it to **My Duet Book**. Reload the page to confirm the local book persists; use **Play duet** and **Remove** on a saved entry.
+4. Open the optional rhythm studio. Toggle a step with a mouse or keyboard, then change tempo and drum level while playback runs.
+5. Use the pairing **Copy link** button and open the copied URL in a fresh tab. For custom tempo or step edits, use Beat Card **Share beat** instead.
+6. Try **Save mix** and **Download card**. To test a specific token, expand the optional lookup panel in a regular browser with network access; no wallet is needed.
 
 ## Validation notes
 
 An independent headless Chromium audit exercised the 30 embedded pair codes, share/copy fallbacks, legacy share formats, malformed-link handling, local saves, responsive viewport sizes, reduced-motion behavior, and PNG export. The audit identified two interaction issues: changing tempo during playback could force extra steps, and toggling a step could drop keyboard focus because the grid was redrawn. Both have been patched in this local source: tempo changes now take effect at the next scheduled step, and focus returns to the edited step after redraw.
 
-The local fixes have passed JavaScript syntax and HTML-structure checks. A fresh browser regression run after these changes is still required. The original audit's machine-readable audio/timing checks had measurement gaps, so its results should not be described as a complete pass. No physical-device test, cross-browser Safari/Firefox test, or subjective listening assessment has been performed here. The GitHub repository and Vercel deployment have not been changed; they still need the separately approved update/deployment before they contain these local fixes.
+The local source, including Duet Hunt, has passed JavaScript syntax and HTML-structure checks. The Duet Book data logic was tested for all 15 unordered sample pairs, order normalization, adding, duplicate prevention, invalid IDs, removal, corrupt stored entries, and blocked browser storage. The explicit six-sample mappings and finite-challenge wording were refined locally on Oct. 13, 2026; a fresh browser regression after these refinements is still required. No independent visual/mobile browser test or Safari/Firefox test was performed here. The user reports that the A/B sound difference is obvious on their listening test; that is user-reported, not an independent listening test by this assistant. The earlier audit's machine-readable audio/timing checks had measurement gaps, so they should not be described as a complete pass.
+
+A read-only check before these local refinements found GitHub `main` and Vercel serving identical earlier HTML (633,678 bytes; SHA-256 `ea4f072dad681d4049476e643ff9d6baa876c08af7e67effeeb5759f33b60d57`). That earlier public version included Duet Hunt. This assistant has not published the current mapping/copy refinements, changed the public README, or submitted anything. The public README is still older and omits Duet Hunt. The updated local ZIP contains the current local `index.html`; it is not a deployment or submission.
