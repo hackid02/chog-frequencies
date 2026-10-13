@@ -1,64 +1,72 @@
-# Chog Frequencies — playable proof of concept
+# Chog Frequencies — Chog Chemistry
 
-A self-contained browser prototype for the Chogathon concept: **Chog Genesis traits shape distinct musical voices that guests can audition and layer into a chorus.** The two starter cards use authentic token metadata and NFT artwork.
+A playful, client-side Chog Genesis sound experience for **anyone**. Tap **Surprise me** to hear an immediate duet from two real Chog tokens. Their verified metadata traits shape their browser-synthesized voices; making music is optional.
 
-## Run it
+## Try the duet
 
-Open `index.html` in a modern browser. Click **Hear the chorus** or **Play Chog Groove** to hear the kick, clap, shaker, and Chog voices together. The studio has editable 8-step lanes for each drum and Chog voice, plus tempo and drum-level controls. Click **Listen solo** on a token card to hear that Chog over the beat. All audio is synthesized locally with the Web Audio API.
+Open `index.html` in a modern browser and tap **Surprise me**. The app chooses a new pair from its six embedded Chog snapshots and starts the duet with one gesture. **Replay pairing** repeats the current pair; **Swap A** or **Swap B** changes one token and plays the new duet. The artwork and metadata snapshots are embedded, so this experience does not need a network lookup.
 
-A fuller, full-width **Frequency Rail** sits directly below the navigation. Musical-note glyphs flow continuously from left to right in the 42px desktop strip. It is purely decorative: no text, BPM, note readout, or playback/pattern connection. Reduced-motion settings freeze the notes; the hero Chog artwork uses layered perspective and hover lighting, while touch pointers do not get the hover-only tilt. Mobile layout QA remains deferred until hosting.
+The **Meet the Chogs** section keeps the layout lighter with four cards at a time: the current pair plus two ready-to-pair sample picks. All six verified snapshots remain available to Surprise me and the A/B swap controls. The current pair is named by token ID and selected real traits. Tier is metadata for context only; it does not boost loudness, quality, or any other musical advantage.
 
-The **Chog Beat Card** is intentionally minimal: Chog pairing, a note/key signature, BPM, and one continuous waveform streak—not the complete step grid or a list of every trait.
+The rhythm studio is optional. Visitors can leave the duet untouched, or adjust tempo, drum level, synthesized kick/clap/shaker lanes, and the editable eight-step Chog voice lanes. Solo audition, the Beat Card, local saves, and PNG export remain available.
 
-- **Save mix** stores the current groove in this browser only. It keeps the latest eight; it does not sync between browsers or devices.
-- **Share beat** makes a playable URL. Its URL-safe encoded snapshot restores both Chog voice lanes, all three drum lanes, tempo, drum level, mute states, and the current solo/duo playback selection. A receiver sees shared token/trait metadata as a **snapshot**; the app does not perform a fresh lookup for those Chogs. Live-token phrase signatures are retained in the snapshot.
-- **Download card** exports a 1200 × 630 PNG with the Chog artwork (when available), note signature, tempo, and single frequency trace. The share URL still carries the full playable mix.
+**Swap A/B** picks from the six embedded samples, so it works instantly without a lookup. For a specific token, expand **Load a specific token ID**; that optional read-only Monad/IPFS lookup needs network access and replaces the selected slot.
 
-Saving and sharing are client-side only. There is no account, wallet, backend, or external storage. The playable link works for other people only after the app is hosted on an accessible public origin. Until then, treat it as a local prototype link; the sandbox preview is not a public share URL.
+## Verified offline sample pool
 
-To audition a different Chog, enter its **Chog Genesis ERC-721 token ID** in the lookup panel and choose Slot A or B. The browser makes read-only requests to Monad mainnet (`eth_chainId`, `eth_call` for `tokenURI(uint256)`) and then fetches the referenced IPFS JSON. It verifies chain ID `143`, checks the metadata trait list, and tries Pinata followed by Web3.Storage, IPFS.io, and dweb.link gateways. The request never signs a message or sends a transaction. If a lookup fails, the two existing audition voices remain available.
+The starter pair is token IDs **445** and **299**. Four more snapshots are embedded, bringing the pool to six:
 
-The in-app HTML preview runs in a network-isolated iframe, so live RPC and IPFS requests may be blocked there. Use a regular browser with network access to try a live lookup; the embedded sample art and traits still work offline.
+| Token ID | Verified metadata name | Example sound-driving traits |
+|---|---|---|
+| 445 | CHOG #1906 | Aqua background; Royal Blue Aura; Prisoner body; Closed Eye Crying eyes |
+| 299 | CHOG #1760 | Lime Green background; Zero THOTS body; Clown Eye eyes; no Aura |
+| 664 | CHOG #664 | Sky Blue background; Gangster suit body; Tired eyes |
+| 1000 | CHOG #1000 | Red Sky background; Royal Blue Aura; Wizard Cape body; fire laser eyes; Durag |
+| 1500 | CHOG #1500 | Lemon Yellow background; Royal Aura; Worried mouth; Dead eyes |
+| 1969 | CHOG #1969 | Light Purple background; Banana suit body; normal smile; Side Eye |
 
-## Real sample data
+The four additions were checked against the Chog Genesis ERC-721 `tokenURI()` metadata on Monad (chain ID 143); their matching IPFS JSON and artwork were checked before being embedded. Marketplace listings were not used as the source of trait data. The collection contract is `0xc96d31F8626c6D03Fae5dCD3d61e3FB9F4a73763` (this is the NFT contract, not the `$CHOG` fungible-token contract).
 
-- Chog Genesis ERC-721 contract on Monad: `0xc96d31F8626c6D03Fae5dCD3d61e3FB9F4a73763` (distinct from the `$CHOG` fungible-token contract).
-- Token ID `445` has metadata name `CHOG #1906`: Aqua background, Royal Blue Aura, Prisoner body, Closed Eye Crying eyes, Common tier.
-- Token ID `299` has metadata name `CHOG #1760`: Lime Green background, Zero THOTS body, Clown Eye eyes, Uncommon tier, and no Aura.
-- Both `tokenURI()` values and the referenced JSON/art were checked against Monad/IPFS. The snapshots are embedded so the sample experience needs no network access.
-- Token references: [#445](https://opensea.io/item/monad/0xc96d31f8626c6d03fae5dcd3d61e3fb9f4a73763/445) · [#299](https://opensea.io/item/monad/0xc96d31f8626c6d03fae5dcd3d61e3fb9f4a73763/299) · [Contract](https://monadscan.com/address/0xc96d31F8626c6D03Fae5dCD3d61e3FB9F4a73763)
+- [Chog Genesis contract on Monadscan](https://monadscan.com/address/0xc96d31F8626c6D03Fae5dCD3d61e3FB9F4a73763)
+- [Token #664](https://opensea.io/item/monad/0xc96d31f8626c6d03fae5dcd3d61e3fb9f4a73763/664) · [#1000](https://opensea.io/item/monad/0xc96d31f8626c6d03fae5dcd3d61e3fb9f4a73763/1000) · [#1500](https://opensea.io/item/monad/0xc96d31f8626c6d03fae5dcd3d61e3fb9f4a73763/1500) · [#1969](https://opensea.io/item/monad/0xc96d31f8626c6d03fae5dcd3d61e3fb9f4a73763/1969)
 
-## Why the Chog NFT matters
+## How the sound follows the Chog
 
-This is not a generic beat-maker with Chog art added on top. Each Chog token's metadata supplies the identity of its musical voice: background sets its tonal palette, eyes shape melody and waveform, body traits shape the envelope, and selected head/mouth traits plus token ID add a phrase signature. Pairing different Chog tokens combines those token-specific voices into a distinct chorus. Remove the Chog metadata and the central paired-voice experience disappears; the editable drums are only its backing.
+- **Background** chooses tonal center and scale.
+- **Eyes** choose melodic contour, waveform, and default voice pattern.
+- **Body** shapes note attack, decay, and gate length.
+- **Side** pans the voice slightly left or right.
+- **Aura** adds a quiet shimmer accent.
+- Other trait values use deterministic fallbacks, so unfamiliar values still contribute to the sound.
+- For read-only live-token lookups, token ID plus Head/Mouth traits can add a subtle phrase signature. Shared links treat live metadata as a snapshot.
+- Tier/rarity does not make a voice louder, better, or more powerful.
 
-The dynamic **Trait → Sound** panel makes that dependency visible for the currently loaded A/B slots. It shows each token's computed palette, waveform, envelope, stereo pan, aura accents, and eight-step melody/rest phrase (including the current editable voice pattern), with a solo audition control on each card. Live lookups use token ID plus Head/Mouth traits for a subtle phrase-contour offset; shared snapshots retain that signature when present.
+Pairing two Chogs combines their token-specific voices. It is not a generic random sound clip with token art added afterward.
 
-The starter cards use real Chog token snapshots so the demo works offline. Read-only Monad lookup can load another token's metadata; it does not verify the user's ownership or require a wallet.
+## Sharing, privacy, and scope
 
-## Prototype mapping
+**Share** opens the browser's native share options for the current pair where supported. The adjacent **Copy link** button tries to copy a short pair URL automatically, shows it in the page, and has a manual-copy fallback. For embedded sample pairs, a one-character code identifies the ordered pair; recipients hear the default groove. For custom tempo and step edits, use the Beat Card's **Share beat**, which preserves the full mixer state. Pairings that include a live-looked-up token may need a longer metadata snapshot. This client-side app uses no external shortener or storage. Links are only generated from a public HTTP(S) origin; local addresses and gated sandbox-preview hosts are blocked rather than copied as if they were public links.
 
-- A synthesized kick, clap, and shaker provide a syncopated 4/4 pocket on independent, editable step lanes. The drum level is adjustable; no recorded drum samples are loaded.
-- Background chooses a tonal center and scale.
-- Eyes choose a melodic contour and default step pattern.
-- Body shapes the note attack, decay, and gate length within each beat.
-- Side pans the voice slightly left or right.
-- Aura adds a quiet shimmer accent.
-- Other trait values get deterministic fallback mappings, so unfamiliar traits still contribute to a voice.
-- A live token's ID, head, and mouth traits add a subtle phrase signature. Tier/rarity does **not** increase volume, quality, or advantage.
+**Save mix** stays in this browser and keeps up to eight saved grooves. There is no account, wallet connection, ownership verification, purchase, transfer, backend, cloud save, or on-chain write. Audio is synthesized in the browser. Optional live lookup reads Monad/IPFS metadata only; it does not sign or submit transactions. The embedded sample pair and artwork work offline.
 
-## Build status and limitations
+The full-width musical-note rail remains decorative and independent of playback. It respects reduced-motion preferences. Responsive styling and comfortable touch targets are retained.
 
-The client-side prototype includes editable synthesized drums, a decorative musical-note rail, the dynamic A/B Trait → Sound comparison, a minimal note-and-waveform Beat Card, local-only saves, playable share links, and PNG export. Shared links preserve both Chog voice lanes, all three drum lanes, tempo, drum level, mute states, solo/duo selection, and any live-token phrase signature in the snapshot. Shared metadata is clearly labeled as a snapshot, not a fresh on-chain lookup.
+## Run or host
 
-Early feedback from one additional tester was positive, especially about beat-making. This is encouraging qualitative feedback—not evidence of repeat use or retention. The project has not yet had Chog-holder testing.
+This is a static, self-contained HTML/CSS/JavaScript app. Open `index.html`, or serve the project root from any static host. For Vercel, select **Other**, leave the build command empty, and use the repository root. No environment variables, credentials, or build step are required. All six sample artworks and their metadata are embedded in `index.html`.
 
-The app is static HTML/CSS/JavaScript and uses browser-generated audio. It has no build step, backend, account system, wallet connection, ownership verification, cloud save, or on-chain transaction. Live lookup is read-only. The source is **not yet publicly deployed**; add the public Vercel URL to the project submission after deployment. Do not share the gated sandbox preview URL as the demo link.
+`chog-frequencies-ui-update.zip` is the refreshed upload bundle and contains the deployable `index.html` at the archive root. The README is maintained separately in the project folder.
 
-## Deployment
+## Quick testing instructions
 
-The app can be deployed as a static site from the repository root. For Vercel, choose **Other** as the framework, leave the build command blank, and serve the root directory; the root `index.html` is the entry page. No environment variables or secrets are required. The sample metadata and artwork are embedded in the HTML; there are no separate runtime assets to build.
+1. Open the app in a modern browser and tap **Surprise me**; confirm a two-Chog duet starts after the gesture.
+2. Use **Replay pairing**, **Swap A**, and **Swap B**. The swap controls use the six embedded samples and need no network.
+3. Open the optional rhythm studio. Toggle a step with a mouse or keyboard, then change tempo and drum level while playback runs.
+4. Use the pairing **Copy link** button and open the copied URL in a fresh tab. For custom tempo or step edits, use Beat Card **Share beat** instead.
+5. Try **Save mix** and **Download card**. To test a specific token, expand the optional lookup panel in a regular browser with network access; no wallet is needed.
 
-## Validation status
+## Validation notes
 
-The current source passes JavaScript syntax checks, HTML/CSS parsing, and mocked DOM/audio smoke tests. Those are simulated checks, not real-browser listening or live-network tests. Before relying on the demo, test actual playback in a regular browser, try read-only Monad/IPFS lookup on a network that permits it, open a shared link in a second browser, and do the deferred mobile-layout and phone-speaker checks after deployment.
+An independent headless Chromium audit exercised the 30 embedded pair codes, share/copy fallbacks, legacy share formats, malformed-link handling, local saves, responsive viewport sizes, reduced-motion behavior, and PNG export. The audit identified two interaction issues: changing tempo during playback could force extra steps, and toggling a step could drop keyboard focus because the grid was redrawn. Both have been patched in this local source: tempo changes now take effect at the next scheduled step, and focus returns to the edited step after redraw.
+
+The local fixes have passed JavaScript syntax and HTML-structure checks. A fresh browser regression run after these changes is still required. The original audit's machine-readable audio/timing checks had measurement gaps, so its results should not be described as a complete pass. No physical-device test, cross-browser Safari/Firefox test, or subjective listening assessment has been performed here. The GitHub repository and Vercel deployment have not been changed; they still need the separately approved update/deployment before they contain these local fixes.

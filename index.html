@@ -1535,9 +1535,17 @@
       trackRows.querySelectorAll(".step").forEach(button => button.addEventListener("click", () => {
         const id = button.dataset.id, step = Number(button.dataset.step);
         if (!state.patterns[id]) return;
+        const restoreStepFocus = document.activeElement === button;
         state.patterns[id][step] = !state.patterns[id][step];
         renderTracks();
         renderMixCard();
+        if (restoreStepFocus) {
+          const updatedButton = [...trackRows.querySelectorAll(".step")].find(cell =>
+            cell.dataset.id === id && Number(cell.dataset.step) === step
+          );
+          try { updatedButton?.focus({ preventScroll: true }); }
+          catch (_) { updatedButton?.focus(); }
+        }
       }));
       trackRows.querySelectorAll("[data-enable]").forEach(button => button.addEventListener("click", () => {
         const id = button.dataset.enable;
@@ -2189,10 +2197,8 @@
       document.getElementById("tempoValue").textContent = state.bpm;
       document.querySelector(".hero-art-bottom span:last-child").textContent = `${state.bpm} BPM`;
       renderMixCard();
-      if (state.playing) {
-        clearTimeout(state.timer);
-        state.timer = setTimeout(tick, 0);
-      }
+      // Keep the already-scheduled step. The next tick reads the updated BPM,
+      // so dragging this slider cannot force extra steps or notes.
     });
     document.getElementById("drumVolume").addEventListener("input", event => {
       state.drumLevel = Number(event.target.value) / 100;
