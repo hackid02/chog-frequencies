@@ -558,6 +558,64 @@
       .step { min-height: 44px; }
     }
     @media (prefers-reduced-motion: reduce) { *, *:before, *:after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } .frequency-rail-track { animation:none !important; transform:translateX(-50%) !important; } }
+    .hero > .duet-hunt { grid-column: 1 / -1; margin: -12px 0 0; }
+    .duet-hunt {
+      margin: 28px 0 34px;
+      padding: clamp(18px, 3vw, 27px);
+      border: 1px solid rgba(131,232,220,.19);
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(131,232,220,.075), rgba(168,146,255,.045) 52%, rgba(255,255,255,.018));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.055), 0 18px 45px rgba(0,0,0,.14);
+    }
+    .duet-hunt-head { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: end; gap: 18px; }
+    .duet-hunt-kicker { margin: 0 0 7px; color: var(--aqua); font-size: 9px; font-weight: 760; letter-spacing: .16em; text-transform: uppercase; }
+    .duet-hunt-title { margin: 0; font-size: clamp(22px, 3vw, 29px); letter-spacing: -.045em; font-weight: 710; }
+    .duet-hunt-intro { max-width: 680px; margin: 8px 0 0; color: #a7b1bc; font-size: 12px; line-height: 1.6; }
+    .duet-hunt-progress { display: grid; min-width: 142px; gap: 4px; justify-items: end; padding: 11px 14px; border: 1px solid rgba(255,255,255,.1); border-radius: 13px; background: rgba(6,9,14,.35); }
+    .duet-hunt-progress strong { color: #eef8f6; font-size: 19px; font-variant-numeric: tabular-nums; letter-spacing: -.035em; }
+    .duet-hunt-progress small { color: #8e9aa7; font-size: 9px; }
+    .duet-hunt-steps { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 9px; margin: 20px 0 15px; padding: 0; list-style: none; }
+    .duet-hunt-steps li { display: flex; min-width: 0; align-items: flex-start; gap: 10px; padding: 12px; border: 1px solid rgba(255,255,255,.075); border-radius: 12px; background: rgba(5,8,13,.25); }
+    .duet-hunt-step-number { display: grid; width: 25px; height: 25px; flex: 0 0 25px; place-items: center; border: 1px solid rgba(131,232,220,.22); border-radius: 8px; color: var(--aqua); font-size: 9px; font-weight: 760; font-variant-numeric: tabular-nums; }
+    .duet-hunt-step-copy { display: grid; gap: 3px; min-width: 0; }
+    .duet-hunt-step-copy strong { color: #e9eff1; font-size: 10px; }
+    .duet-hunt-step-copy small { color: #8e9aa7; font-size: 9px; line-height: 1.45; }
+    .duet-hunt-actions { display: flex; flex-wrap: wrap; gap: 9px; }
+    .duet-hunt-button { display: inline-flex; min-height: 42px; align-items: center; justify-content: center; gap: 8px; padding: 0 15px; border: 1px solid rgba(255,255,255,.13); border-radius: 11px; background: rgba(255,255,255,.045); color: #e8eef0; cursor: pointer; font-size: 10px; font-weight: 720; transition: transform .16s ease, border-color .16s ease, background .16s ease; }
+    .duet-hunt-button:hover:not(:disabled) { transform: translateY(-1px); border-color: rgba(131,232,220,.42); background: rgba(131,232,220,.09); }
+    .duet-hunt-button-primary { border-color: rgba(131,232,220,.31); background: linear-gradient(135deg, rgba(131,232,220,.19), rgba(168,146,255,.12)); color: #edfaf7; }
+    .duet-hunt-button-primary:hover:not(:disabled) { background: linear-gradient(135deg, rgba(131,232,220,.26), rgba(168,146,255,.17)); }
+    .duet-hunt-button:focus-visible { outline: 2px solid var(--aqua); outline-offset: 3px; }
+    .duet-hunt-button:disabled { cursor: not-allowed; opacity: .48; }
+    .duet-hunt-status { min-height: 17px; margin: 10px 0 15px; color: #9aa7b0; font-size: 10px; line-height: 1.5; }
+    .duet-book { padding-top: 15px; border-top: 1px solid rgba(255,255,255,.085); }
+    .duet-book-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 11px; }
+    .duet-book-head h3 { margin: 0; color: #e8eef0; font-size: 12px; font-weight: 730; }
+    .duet-book-local-note { color: #7f8b98; font-size: 9px; text-align: right; }
+    .duet-book-empty { margin: 0; padding: 14px; border: 1px dashed rgba(255,255,255,.12); border-radius: 11px; color: #87939f; font-size: 10px; line-height: 1.55; }
+    .duet-book-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 9px; }
+    .duet-book-entry { min-width: 0; padding: 12px; border: 1px solid rgba(255,255,255,.09); border-radius: 12px; background: rgba(5,8,13,.28); }
+    .duet-book-entry-title { margin: 0; color: #e8eff1; font-size: 10px; font-weight: 760; }
+    .duet-book-entry-traits { margin: 5px 0 10px; color: #94a1ad; font-size: 9px; line-height: 1.5; overflow-wrap: anywhere; }
+    .duet-book-entry-actions { display: flex; flex-wrap: wrap; gap: 7px; }
+    .duet-book-entry-actions .duet-hunt-button { min-height: 32px; padding: 0 10px; font-size: 9px; }
+    @media (max-width: 620px) {
+      .hero > .duet-hunt { margin: -4px 0 0; }
+      .duet-hunt { margin: 22px 0 27px; padding: 17px; border-radius: 18px; }
+      .duet-hunt-head { grid-template-columns: minmax(0,1fr); gap: 12px; }
+      .duet-hunt-progress { min-width: 0; grid-template-columns: auto 1fr; align-items: center; justify-items: start; gap: 4px 10px; }
+      .duet-hunt-progress strong { grid-row: span 2; }
+      .duet-hunt-progress small { align-self: start; }
+      .duet-hunt-steps { grid-template-columns: minmax(0,1fr); gap: 7px; margin-top: 15px; }
+      .duet-hunt-actions { display: grid; grid-template-columns: minmax(0,1fr); }
+      .duet-hunt-actions .duet-hunt-button { width: 100%; }
+      .duet-book-grid { grid-template-columns: minmax(0,1fr); }
+    }
+    @media (max-width: 380px) {
+      .duet-hunt { padding: 14px; }
+      .duet-book-head { align-items: flex-start; flex-direction: column; gap: 4px; }
+      .duet-book-local-note { text-align: left; }
+    }
   </style>
 </head>
 <body>
@@ -661,6 +719,38 @@
             <p class="pair-share-status" id="pairShareStatus" role="status" aria-live="polite">The URL is shown here so you can copy it manually if needed.</p>
           </div>
         </div>
+      <section class="duet-hunt" id="duetHunt" aria-labelledby="duetHuntTitle">
+        <div class="duet-hunt-head">
+          <div>
+            <p class="duet-hunt-kicker">Listen · swap · collect</p>
+            <h2 class="duet-hunt-title" id="duetHuntTitle">Duet Hunt</h2>
+            <p class="duet-hunt-intro">Explore the six offline Chogs, compare a pairing with Swap A or B, and keep the duets you want to hear again. No music skills needed.</p>
+          </div>
+          <div class="duet-hunt-progress" role="status" aria-live="polite" aria-atomic="true">
+            <strong id="duetBookCount">0 / 15</strong>
+            <small>sample pairings in your book</small>
+          </div>
+        </div>
+        <ol class="duet-hunt-steps" aria-label="How Duet Hunt works">
+          <li><span class="duet-hunt-step-number">01</span><span class="duet-hunt-step-copy"><strong>Listen</strong><small>Load a fresh pair and hear its browser-made duet.</small></span></li>
+          <li><span class="duet-hunt-step-number">02</span><span class="duet-hunt-step-copy"><strong>Swap</strong><small>Change A or B above and compare what you hear.</small></span></li>
+          <li><span class="duet-hunt-step-number">03</span><span class="duet-hunt-step-copy"><strong>Collect</strong><small>Save a sample pairing to revisit it later.</small></span></li>
+        </ol>
+        <div class="duet-hunt-actions" role="group" aria-label="Duet Hunt actions">
+          <button class="duet-hunt-button duet-hunt-button-primary" id="findNewDuetBtn" type="button">Find a new duet</button>
+          <button class="duet-hunt-button" id="saveCurrentDuetBtn" type="button" disabled>Add current duet to my book</button>
+        </div>
+        <p class="duet-hunt-status" id="duetHuntStatus" role="status" tabindex="-1" aria-live="polite" aria-atomic="true">Your Duet Book is empty. Start with the current pair, try a swap, then save any offline pairing you want to keep.</p>
+        <div class="duet-book" aria-labelledby="duetBookTitle">
+          <div class="duet-book-head">
+            <h3 id="duetBookTitle">My Duet Book</h3>
+            <span class="duet-book-local-note">Saved only in this browser · 15 possible sample pairs</span>
+          </div>
+          <p class="duet-book-empty" id="duetBookEmpty">No duets collected yet. Use “Find a new duet” or save the current sample pair.</p>
+          <div class="duet-book-grid" id="duetBookEntries" aria-live="polite"></div>
+        </div>
+      </section>
+
       </section>
 
       <section aria-labelledby="tokensTitle">
@@ -695,6 +785,8 @@
           </div>
         </details>
       </section>
+
+
 
       <section class="studio" id="studio" aria-labelledby="studioTitle">
         <div class="studio-head">
@@ -934,6 +1026,155 @@
       { id: "drum-clap", name: "Clap", short: "C", role: "Backbeat · beats 2 + 4", color: "#ff937c", steps: [0, 0, 1, 0, 0, 0, 1, 0] },
       { id: "drum-shaker", name: "Shaker", short: "S", role: "Offbeat · light motion", color: "#83e8dc", steps: [0, 1, 0, 1, 0, 1, 0, 1] }
     ];
+
+    const DUET_BOOK_KEY = "chog-frequencies:duet-book:v1";
+    const duetHuntSeenThisVisit = new Set();
+    function duetPairKey(ids) {
+      if (!Array.isArray(ids) || ids.length !== 2) return "";
+      const numbers = ids.map(Number);
+      if (!numbers.every(Number.isSafeInteger) || numbers[0] < 1 || numbers[1] < 1 || numbers[0] === numbers[1]) return "";
+      return numbers.sort((a, b) => a - b).join("-");
+    }
+    function allSampleDuets() {
+      const pairs = [];
+      for (let i = 0; i < SAMPLE_CHOGS.length; i++) {
+        for (let j = i + 1; j < SAMPLE_CHOGS.length; j++) {
+          const ids = [Number(SAMPLE_CHOGS[i].id), Number(SAMPLE_CHOGS[j].id)];
+          pairs.push({ ids, key: duetPairKey(ids) });
+        }
+      }
+      return pairs;
+    }
+    function sampleDuetFromIds(ids) {
+      const key = duetPairKey(ids);
+      if (!key) return null;
+      const pair = ids.map(id => SAMPLE_CHOGS.find(chog => Number(chog.id) === Number(id)));
+      return pair.length === 2 && pair.every(Boolean) ? pair : null;
+    }
+    function readDuetBook() {
+      try {
+        const stored = JSON.parse(window.localStorage.getItem(DUET_BOOK_KEY) || "[]");
+        if (!Array.isArray(stored)) return [];
+        const seen = new Set();
+        const entries = [];
+        for (const item of stored) {
+          if (!item || !Array.isArray(item.ids) || item.ids.length !== 2) continue;
+          const ids = item.ids.map(Number);
+          const key = duetPairKey(ids);
+          if (!key || !sampleDuetFromIds(ids) || seen.has(key)) continue;
+          seen.add(key);
+          const savedAt = Number(item.savedAt);
+          entries.push({ ids, key, savedAt: Number.isFinite(savedAt) ? savedAt : 0 });
+        }
+        return entries.slice(0, allSampleDuets().length);
+      } catch (_) { return []; }
+    }
+    function addDuetToBook(ids) {
+      const pair = sampleDuetFromIds(ids);
+      if (!pair) return { ok: false, reason: "not-sample" };
+      const key = duetPairKey(ids);
+      const entries = readDuetBook();
+      if (entries.some(entry => entry.key === key)) return { ok: false, reason: "duplicate" };
+      const next = [{ ids: pair.map(chog => Number(chog.id)), savedAt: Date.now() }, ...entries].slice(0, allSampleDuets().length);
+      try {
+        window.localStorage.setItem(DUET_BOOK_KEY, JSON.stringify(next));
+        return { ok: true, entries: next };
+      } catch (_) { return { ok: false, reason: "storage" }; }
+    }
+    function removeDuetFromBook(key) {
+      const next = readDuetBook().filter(entry => entry.key !== key);
+      try {
+        window.localStorage.setItem(DUET_BOOK_KEY, JSON.stringify(next));
+        return true;
+      } catch (_) { return false; }
+    }
+    function currentSampleDuetIds() {
+      if (!Array.isArray(CHOGS) || CHOGS.length < 2) return null;
+      const ids = CHOGS.slice(0, 2).map(chog => Number(chog.id));
+      return sampleDuetFromIds(ids) ? ids : null;
+    }
+    function describeSampleChog(chog) {
+      const background = traitValue(chog, "Background") || "sample voice";
+      const eyes = traitValue(chog, "Eyes") || "trait-shaped eyes";
+      return `#${Number(chog.id)} · ${background} / ${eyes}`;
+    }
+    function renderDuetHunt() {
+      const count = document.getElementById("duetBookCount");
+      const status = document.getElementById("duetHuntStatus");
+      const entriesNode = document.getElementById("duetBookEntries");
+      const empty = document.getElementById("duetBookEmpty");
+      const saveButton = document.getElementById("saveCurrentDuetBtn");
+      const findButton = document.getElementById("findNewDuetBtn");
+      if (!count || !status || !entriesNode || !empty || !saveButton || !findButton) return;
+
+      const total = allSampleDuets().length;
+      const book = readDuetBook();
+      const savedKeys = new Set(book.map(entry => entry.key));
+      const currentIds = currentSampleDuetIds();
+      const currentKey = currentIds ? duetPairKey(currentIds) : "";
+      if (currentKey) duetHuntSeenThisVisit.add(currentKey);
+      const currentSaved = Boolean(currentKey && savedKeys.has(currentKey));
+      const newCandidates = allSampleDuets().filter(pair => !savedKeys.has(pair.key) && !duetHuntSeenThisVisit.has(pair.key));
+      count.textContent = `${book.length} / ${total}`;
+      saveButton.disabled = !currentIds || currentSaved;
+      saveButton.textContent = currentSaved ? "Already in your Duet Book" : currentIds ? "Add current duet to my book" : "Use an offline sample pair to save";
+      findButton.disabled = newCandidates.length === 0;
+      findButton.textContent = book.length >= total ? "All sample pairings collected" : newCandidates.length ? "Find a new duet" : currentIds && !currentSaved ? "Save current duet to continue" : "All remaining pairs heard this visit";
+
+      if (book.length >= total) {
+        status.textContent = "You’ve collected all 15 unordered pairings from the six embedded samples. Replay one from your book or remove one to hunt again.";
+      } else if (!currentIds && newCandidates.length === 0) {
+        status.textContent = "You’ve heard all the remaining uncollected sample pairs in this visit. Reload later to start exploring them again.";
+      } else if (!currentIds) {
+        status.textContent = "The Duet Book uses the six embedded offline samples. Find a new duet to load a pair you can save here.";
+      } else if (currentSaved && newCandidates.length === 0) {
+        status.textContent = `Current duet #${currentIds[0]} × #${currentIds[1]} is in your book. You’ve heard the other uncollected sample pairs this visit; reload later to explore them again.`;
+      } else if (currentSaved) {
+        status.textContent = `Current duet #${currentIds[0]} × #${currentIds[1]} is already in your book. Find another pair, or replay a saved one below.`;
+      } else if (newCandidates.length === 0) {
+        status.textContent = `You’ve heard all the other uncollected sample pairs in this visit. Save #${currentIds[0]} × #${currentIds[1]} to your book, or reload later to explore the samples again.`;
+      } else {
+        status.textContent = `Current sample duet: #${currentIds[0]} × #${currentIds[1]}. Listen, compare with Swap A/B, then save it if you want to revisit it.`;
+      }
+
+      const ordered = [...book].sort((a, b) => b.savedAt - a.savedAt);
+      const activeElement = document.activeElement;
+      const focusWasInBook = Boolean(activeElement && entriesNode.contains(activeElement));
+      const focusedPlayKey = focusWasInBook ? activeElement.getAttribute("data-play-duet") : null;
+      const focusedRemoveKey = focusWasInBook ? activeElement.getAttribute("data-remove-duet") : null;
+      empty.hidden = ordered.length > 0;
+      entriesNode.innerHTML = ordered.map(entry => {
+        const pair = sampleDuetFromIds(entry.ids);
+        if (!pair) return "";
+        const label = `#${Number(entry.ids[0])} × #${Number(entry.ids[1])}`;
+        const traits = `${describeSampleChog(pair[0])}  ×  ${describeSampleChog(pair[1])}`;
+        return `<article class="duet-book-entry"><h4 class="duet-book-entry-title">${escapeHTML(label)}</h4><p class="duet-book-entry-traits">${escapeHTML(traits)}</p><div class="duet-book-entry-actions"><button class="duet-hunt-button duet-hunt-button-primary" type="button" data-play-duet="${escapeHTML(entry.key)}">Play duet</button><button class="duet-hunt-button" type="button" data-remove-duet="${escapeHTML(entry.key)}" aria-label="Remove ${escapeHTML(label)} from your Duet Book">Remove</button></div></article>`;
+      }).join("");
+      entriesNode.querySelectorAll("[data-play-duet]").forEach(button => button.addEventListener("click", () => {
+        const entry = readDuetBook().find(item => item.key === button.dataset.playDuet);
+        const pair = entry && sampleDuetFromIds(entry.ids);
+        if (pair) setPairing(pair, "duet-book");
+      }));
+      entriesNode.querySelectorAll("[data-remove-duet]").forEach(button => button.addEventListener("click", () => {
+        if (!removeDuetFromBook(button.dataset.removeDuet)) {
+          status.textContent = "This browser could not update the Duet Book. Its saved entries are unchanged.";
+          return;
+        }
+        duetHuntSeenThisVisit.delete(button.dataset.removeDuet);
+        renderDuetHunt();
+        showToast("Duet removed from your local book.");
+      }));
+      if (focusWasInBook) {
+        const focusTarget = focusedPlayKey
+          ? entriesNode.querySelector(`[data-play-duet="${focusedPlayKey}"]`)
+          : focusedRemoveKey
+            ? (entriesNode.querySelector(`[data-remove-duet="${focusedRemoveKey}"]`) || entriesNode.querySelector("[data-remove-duet]"))
+            : null;
+        const fallbackFocus = focusTarget || (!saveButton.disabled && saveButton) || (!findButton.disabled && findButton) || status;
+        try { fallbackFocus.focus({ preventScroll: true }); }
+        catch (_) { try { fallbackFocus.focus(); } catch (_) {} }
+      }
+    }
 
     const SAVED_BEATS_KEY = "chog-frequencies:saved-beats:v1";
     const MAX_SAVED_BEATS = 8;
@@ -1340,6 +1581,7 @@
       }).join("");
       renderHeroArt();
       renderPairingCaption();
+      renderDuetHunt();
       wireImageFallbacks(tokenCards);
       tokenCards.querySelectorAll("[data-listen]").forEach(button => {
         button.addEventListener("click", () => {
@@ -2184,6 +2426,32 @@
       return startPlayback(ids);
     }
     document.getElementById("playChorus").addEventListener("click", playMainMix);
+    document.getElementById("findNewDuetBtn").addEventListener("click", () => {
+      const bookKeys = new Set(readDuetBook().map(entry => entry.key));
+      const currentIds = currentSampleDuetIds();
+      const currentKey = currentIds ? duetPairKey(currentIds) : "";
+      const candidates = allSampleDuets().filter(pair => !bookKeys.has(pair.key) && pair.key !== currentKey && !duetHuntSeenThisVisit.has(pair.key));
+      if (!candidates.length) {
+        showToast(currentIds && !bookKeys.has(currentKey) ? "You’ve heard the remaining pairs this visit—save the current duet to keep it." : "All available sample pairings are collected.");
+        return;
+      }
+      const next = sampleDuetFromIds(randomItem(candidates).ids);
+      if (next) setPairing(next, "hunt");
+    });
+    document.getElementById("saveCurrentDuetBtn").addEventListener("click", () => {
+      const result = addDuetToBook(currentSampleDuetIds());
+      if (result.ok) {
+        renderDuetHunt();
+        showToast("Duet added to your book on this device.");
+      } else if (result.reason === "duplicate") {
+        renderDuetHunt();
+        showToast("That pairing is already in your Duet Book.");
+      } else if (result.reason === "storage") {
+        document.getElementById("duetHuntStatus").textContent = "This browser could not save the Duet Book. Your current pairing still works; try enabling local storage.";
+      } else {
+        showToast("Choose a pairing from the six embedded samples to add it to your book.");
+      }
+    });
     document.getElementById("heroPlay").addEventListener("click", surpriseMe);
     document.getElementById("heroReplay").addEventListener("click", replayPairing);
     document.getElementById("swapChogA").addEventListener("click", () => swapChog(0));
